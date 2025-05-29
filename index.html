@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Blog de Ulin</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            /* Fondo con degradado y efecto de estrellas */
+            background: radial-gradient(ellipse at 60% 0%, #263a6b 0%, #182848 60%, #0f2027 100%);
+        }
+        header {
+            color: white;
+            text-align: center;
+            padding: 2em 0 1em 0;
+            box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+            background: rgba(33, 150, 243, 0.25);
+            backdrop-filter: blur(2px);
+            position: relative;
+            z-index: 2;
+        }
+        .intro-ulin {
+            margin: 1.5em auto 0 auto;
+            background: rgba(33,150,243,0.18);
+            padding: 1em 2em;
+            border-radius: 12px;
+            display: inline-block;
+            color: #fff;
+            font-size: 1.1em;
+            max-width: 600px;
+            box-shadow: 0 2px 12px rgba(33,150,243,0.10);
+            position: relative;
+            z-index: 2;
+        }
+        main {
+            padding: 2em;
+            max-width: 900px;
+            margin: 2em auto;
+            background: rgba(255,255,255,0.10);
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(33,150,243,0.10);
+            color: #e3f2fd;
+            backdrop-filter: blur(2px);
+            position: relative;
+            z-index: 2;
+        }
+        h2 {
+            color: #90caf9;
+            border-bottom: 2px solid #42a5f5;
+            padding-bottom: 0.3em;
+            text-shadow: 0 2px 8px #1976d2;
+        }
+        ul {
+            padding-left: 20px;
+            list-style: none;
+        }
+        ul li {
+            margin: 0.5em 0;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s ease-out forwards;
+            background: rgba(33,150,243,0.10);
+            border-radius: 6px;
+            padding: 0.3em 0.7em;
+            box-shadow: 0 1px 6px rgba(33,150,243,0.07);
+        }
+        ul li img {
+            width: 32px;
+            height: 22px;
+            margin-right: 12px;
+            border: 1px solid #42a5f5;
+            border-radius: 4px;
+            animation: banderaPop 0.7s cubic-bezier(.68,-0.55,.27,1.55) both;
+            box-shadow: 0 2px 8px #1976d2;
+            background: #fff;
+        }
+        ul li img.animated {
+            animation: banderaPop 0.7s cubic-bezier(.68,-0.55,.27,1.55) both;
+        }
+        @keyframes banderaPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-20deg);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        .memorable {
+            background: rgba(33,150,243,0.13);
+            padding: 1.5em;
+            border-left: 5px solid #42a5f5;
+            margin: 1.5em 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(33,150,243,0.10);
+            color: #fff;
+        }
+        footer {
+            text-align: center;
+            padding: 1em 0;
+            background: rgba(33,150,243,0.25);
+            color: #e3f2fd;
+            margin-top: 2em;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 2px 12px rgba(33,150,243,0.10);
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .galeria-viaje {
+            margin: 2em 0;
+        }
+        .galeria-viaje h2 {
+            color: #90caf9;
+            border-bottom: 2px solid #42a5f5;
+            padding-bottom: 0.3em;
+            text-shadow: 0 2px 8px #1976d2;
+            text-align: center;
+        }
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1em;
+            margin-top: 1em;
+        }
+        .foto-galeria,
+        .marco-foto {
+            position: relative;
+            overflow: hidden;
+            border-radius: 14px;
+            box-shadow: 0 2px 14px rgba(33,150,243,0.13);
+            background: rgba(33,150,243,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: galeriaFadeIn 0.8s both;
+            will-change: transform, box-shadow;
+            max-width: 270px;
+            margin: 0 auto;
+            padding-top: 2.2em;
+            min-height: 380px; /* Aumenta el alto mínimo para dar espacio a la descripción */
+        }
+        .titulo-foto {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #1976d2 60%, #42a5f5 100%);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.08em;
+            letter-spacing: 0.5px;
+            text-align: center;
+            padding: 0.5em 0 0.3em 0;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 2px 8px rgba(33,150,243,0.10);
+            z-index: 2;
+            text-shadow: 0 2px 8px #1976d2;
+            opacity: 0.97;
+            pointer-events: none;
+            user-select: none;
+        }
+        .foto-galeria img,
+        .marco-foto img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(33,150,243,0.10);
+            border: 2px solid #90caf9;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            will-change: transform, box-shadow, border-color;
+        }
+        .foto-galeria:hover,
+        .marco-foto:hover {
+            transform: scale(1.035) rotate(-1deg);
+            box-shadow: 0 8px 24px rgba(33,150,243,0.18), 0 0 0 2px #42a5f533;
+            z-index: 2;
+        }
+        .foto-galeria:hover img,
+        .marco-foto:hover img {
+            transform: scale(1.06) rotate(1deg);
+            filter: brightness(1.07) saturate(1.2) blur(0.3px);
+            border-color: #42a5f5;
+        }
+        .desc-foto,
+        .desc-foto.scroll-desc {
+            position: static;
+            bottom: auto;
+            left: auto;
+            width: 100%;
+            max-height: none;
+            background: linear-gradient(0deg, rgba(33,150,243,0.13) 80%, transparent 100%);
+            color: #fff;
+            font-size: 1em;
+            padding: 0.7em 1em 0.5em 1em;
+            opacity: 0.97;
+            text-shadow: 0 2px 8px #1976d2;
+            letter-spacing: 0.5px;
+            border-radius: 0 0 14px 14px;
+            box-sizing: border-box;
+            transition: background 0.3s;
+            pointer-events: auto;
+            overflow-y: auto;
+            animation: descFadeIn 1.2s both;
+            scrollbar-width: thin;
+            scrollbar-color: #42a5f5 #1e3c72;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5em;
+            margin-top: 0.2em;
+        }
+
+        /* Elimina las reglas hover para mostrar descripción */
+        .foto-galeria:hover .desc-foto,
+        .marco-foto:hover .desc-foto,
+        .foto-galeria:hover .desc-foto.scroll-desc,
+        .marco-foto:hover .desc-foto.scroll-desc {
+            max-height: none;
+            padding: 0.7em 1em 0.5em 1em;
+            background: linear-gradient(0deg, rgba(33,150,243,0.18) 90%, transparent 100%);
+            pointer-events: auto;
+        }
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.2em;
+            margin-top: 1em;
+        }
+        .marco-foto {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 4px 18px rgba(33,150,243,0.18), 0 0 0 6px #42a5f533;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border: 4px solid #90caf9;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            animation: galeriaFadeIn 0.8s both;
+            will-change: transform, box-shadow, border-color;
+        }
+        .marco-foto:hover {
+            transform: scale(1.055) rotate(-1.5deg);
+            box-shadow: 0 12px 36px rgba(33,150,243,0.22), 0 0 0 8px #42a5f555;
+            border-color: #42a5f5;
+            z-index: 2;
+        }
+        .foto-galeria.marco-foto {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 0;
+            background: none;
+            border: none;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        .foto-galeria.marco-foto img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 18px;
+            box-shadow: 0 4px 18px rgba(33,150,243,0.18), 0 0 0 6px #42a5f533;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border: 4px solid #90caf9;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            will-change: transform, box-shadow, border-color;
+        }
+
+        .foto-galeria.marco-foto:hover img {
+            transform: scale(1.055) rotate(-1.5deg);
+            box-shadow: 0 12px 36px rgba(33,150,243,0.22), 0 0 0 8px #42a5f555;
+            border-color: #42a5f5;
+            z-index: 2;
+        }
+        .desc-foto.scroll-desc {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-height: 3.5em;
+            background: linear-gradient(0deg, rgba(33,150,243,0.92) 80%, transparent 100%);
+            color: #fff;
+            font-size: 0.98em;
+            padding: 0.7em 1em 0.5em 1em;
+            opacity: 0.97;
+            text-shadow: 0 2px 8px #1976d2;
+            letter-spacing: 0.5px;
+            border-radius: 0 0 14px 14px;
+            box-sizing: border-box;
+            transition: max-height 0.4s, background 0.3s;
+            pointer-events: none;
+            overflow-y: auto;
+            animation: descFadeIn 1.2s both;
+            scrollbar-width: thin;
+            scrollbar-color: #42a5f5 #1e3c72;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5em;
+        }
+        .desc-icon {
+            font-size: 1.2em;
+            flex-shrink: 0;
+            margin-right: 0.2em;
+            filter: drop-shadow(0 1px 2px #1976d2);
+        }
+        .marco-foto:hover .desc-foto.scroll-desc {
+            max-height: 8em;
+            background: linear-gradient(0deg, rgba(33,150,243,0.98) 90%, transparent 100%);
+            pointer-events: auto;
+        }
+        .desc-foto.scroll-desc::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .desc-foto.scroll-desc::-webkit-scrollbar-thumb {
+            background: #42a5f5;
+            border-radius: 4px;
+        }
+        @keyframes galeriaFadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(30px);}
+            to   { opacity: 1; transform: scale(1) translateY(0);}
+        }
+        @keyframes descFadeIn {
+            from { opacity: 0; transform: translateY(20px);}
+            to   { opacity: 0.97; transform: translateY(0);}
+        }
+        .fondo-animado-ulin {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            /* Efecto de estrellas sutil */
+            background-image:
+                repeating-radial-gradient(circle at 20% 30%, #fff2 0 1px, transparent 1px 100%),
+                repeating-radial-gradient(circle at 80% 70%, #fff3 0 1.2px, transparent 1.2px 100%),
+                repeating-radial-gradient(circle at 50% 80%, #fff1 0 1px, transparent 1px 100%);
+            background-size: 100vw 100vh;
+            background-repeat: no-repeat;
+            opacity: 0.9;
+        }
+        .icono-flotante {
+            position: absolute;
+            filter: drop-shadow(0 2px 8px #1976d2);
+            animation: iconFloat 6s ease-in-out infinite alternate;
+            will-change: transform;
+            opacity: 0.88;
+            z-index: 0;
+            pointer-events: none;
+            transition: filter 0.2s, opacity 0.3s;
+        }
+        @keyframes iconFloat {
+            0% { transform: translateY(0px) scale(1);}
+            100% { transform: translateY(-18px) scale(1.08);}
+        }
+    </style>
+</head>
+<body>
+    <div class="fondo-animado-ulin"></div>
+    <header>
+        <h1>El Blog de Ulin</h1>
+        <p>Un viaje por Europa lleno de sorpresas, cultura y sabores</p>
+        <div class="intro-ulin">
+            <strong>Sobre el Maestro Ulin</strong><br>
+            El Maestro Ulin es un destacado docente de la Universidad Juárez Autónoma de Tabasco (UJAT), perteneciente a la División Académica de Ciencias Sociales y Humanidades (DACSyH). Además de su labor como profesor, es abogado y filósofo, reconocido por su pasión por la enseñanza, su profundo conocimiento en derecho y filosofía, y su compromiso con la formación integral de sus estudiantes.
+        </div>
+    </header>
+    <main>
+        <section>
+            <h2>🌍 Experiencia General</h2>
+            <p><strong>Países visitados (en orden):</strong></p>
+            <ul id="lista-paises"></ul>
+
+            <p><strong>¿Cómo te preparaste para el viaje?</strong></p>
+            <p>Desde los 13 años soñaba con viajar a Europa, leyendo revistas y viendo películas como 007. Intentó a los 16, pero su madre no lo permitió. Años después, logró cumplir su sueño.</p>
+
+            <p><strong>¿Tuviste algún choque cultural?</strong></p>
+            <p>En Egipto: diferente forma de vestir, idioma, alfabeto, números y saludos.</p>
+
+            <div class="memorable">
+                <strong>Momento más memorable:</strong><br>
+                La primera vez que vio la Torre Eiffel al atardecer desde el Trocadero. La emoción fue tan fuerte que casi se desmaya. La ha visitado 5 veces desde entonces.
+            </div>
+        </section>
+
+        <section>
+            <h2>🍽️ Comida y Cultura</h2>
+            <p><strong>Comidas memorables:</strong></p>
+            <ul>
+                <li><strong>París:</strong> Tartare (carne cruda con almendras, aceitunas, especias y yema de huevo crudo).</li>
+                <li><strong>España:</strong> Paella (mucho mejor que la versión mexicana), y embutidos como chorizo, morcilla y carnes secas.</li>
+            </ul>
+
+            <p><strong>¿Festivales o eventos especiales?</strong> No visitó ninguno.</p>
+
+            <p><strong>Interacción con los locales:</strong></p>
+            <p>La gente fue muy acogedora, incluso más amable que en México. Muy interesantes y abiertos.</p>
+        </section>
+
+        <section class="galeria-viaje">
+            <h2>📸 Galería del Viaje</h2>
+            <div class="galeria-grid">
+                <div class="foto-galeria marco-foto">
+                    <div class="titulo-foto">Roma</div>
+                    <img src="viajeRoma.jpg" alt="Roma">
+                    <div class="desc-foto scroll-desc">
+                        <span class="desc-icon">🏛️</span>
+                        El Coliseo Romano, símbolo de la historia y la grandeza de Roma. Un lugar donde el pasado cobra vida entre piedras milenarias.
+                    </div>
+                </div>
+                <div class="foto-galeria marco-foto">
+                    <div class="titulo-foto">La Rochelle, Francia</div>
+                    <img src="Franciaamigos.jpg" alt="Festival Grand Pavois">
+                    <div class="desc-foto scroll-desc">
+                        <span class="desc-icon">⛵</span>
+                        Grand Pavois: Salón náutico internacional en La Rochelle, Francia. Uno de los eventos marítimos más importantes de Europa, lleno de innovación y tradición.
+                    </div>
+                </div>
+                <div class="foto-galeria marco-foto">
+                    <div class="titulo-foto">Londres</div>
+                    <img src="Big.jpg" alt="Foto del Big Ben">
+                    <div class="desc-foto scroll-desc">
+                        <span class="desc-icon">🕰️</span>
+                        El Big Ben está en Londres. ¿Sabías que "Big Ben" es el apodo de la campana y no de la torre? La torre se llama "Elizabeth Tower", y es uno de los íconos más fotografiados del mundo.
+                    </div>
+                </div>
+                <div class="foto-galeria marco-foto">
+                    <div class="titulo-foto">Helsinki, Finlandia</div>
+                    <img src="Finlandia.jpg" alt="Capital de Finlandia Helsinki">
+                    <div class="desc-foto scroll-desc">
+                        <span class="desc-icon">❄️</span>
+                        Recorriendo las calles de Helsinki. A veces lo perfecto puede ser aburrido; el caos da sabor a la vida. Una ciudad moderna rodeada de naturaleza.
+                    </div>
+                </div>
+                <div class="foto-galeria marco-foto">
+                    <div class="titulo-foto">Viena, Austria</div>
+                    <img src="Austria.jpg" alt="Austria">
+                    <div class="desc-foto scroll-desc">
+                        <span class="desc-icon">🎼</span>
+                        El Palacio de Schönbrunn en Viena, Austria. Lugar donde nació Mozart, su segundo compositor favorito. Un paseo por la historia y la música clásica.
+                    </div>
+                </div>
+                <div class="foto-galeria marco-foto">
+                    <div class="titulo-foto">Valle del Loira, Francia</div>
+                    <img src="Van.jpg" alt="Valle del Loira, Francia">
+                    <div class="desc-foto scroll-desc">
+                        <span class="desc-icon">🏰</span>
+                        El Valle del Loira es famoso por sus castillos y paisajes impresionantes. Un destino de cuento de hadas en el corazón de Francia.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 El Blog de Ulin. Todos los derechos reservados.</p>
+    </footer>
+    <script>
+// Fondo azul con estrellas sutiles
+document.body.style.background = "radial-gradient(ellipse at 60% 0%, #263a6b 0%, #182848 60%, #0f2027 100%)";
+
+// --- Iconos animados flotando con CSS y JS (solo cosas de viajar y de Ulin) ---
+const fondo = document.querySelector('.fondo-animado-ulin');
+const iconosViaje = [
+    // Avión
+    {
+        html: `<svg width="48" height="48" viewBox="0 0 48 48"><path fill="#90caf9" d="M4 24L44 8l-8 32-8-12-12-4z" stroke="#1976d2" stroke-width="2"/></svg>`,
+        class: "icon-avion",
+        x: 10, y: 80, dx: 1.1, dy: 0.09, size: 48
+    },
+    // Globo terráqueo
+    {
+        html: `<svg width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="#1976d2"/><ellipse cx="22" cy="22" rx="14" ry="7" fill="#42a5f5"/><circle cx="22" cy="22" r="18" fill="none" stroke="#90caf9" stroke-width="2"/></svg>`,
+        class: "icon-globo",
+        x: 80, y: 400, dx: 0.5, dy: 0.13, size: 44
+    },
+    // Maleta de viaje
+    {
+        html: `<svg width="38" height="38" viewBox="0 0 38 38"><rect x="10" y="14" width="18" height="16" rx="4" fill="#90caf9"/><rect x="16" y="8" width="6" height="8" rx="2" fill="#1976d2"/><rect x="14" y="26" width="10" height="4" rx="2" fill="#42a5f5"/></svg>`,
+        class: "icon-maleta",
+        x: 300, y: 200, dx: -0.3, dy: 0.18, size: 38
+    },
+    // Torre Eiffel (Francia)
+    {
+        html: `<svg width="36" height="36" viewBox="0 0 36 36"><rect x="16" y="10" width="4" height="18" fill="#bdbdbd"/><polygon points="18,4 12,28 24,28" fill="#90caf9"/><rect x="12" y="28" width="12" height="2" fill="#1976d2"/></svg>`,
+        class: "icon-eiffel",
+        x: 500, y: 100, dx: 0.22, dy: 0.15, size: 36
+    },
+    // Big Ben (Londres)
+    {
+        html: `<svg width="32" height="38" viewBox="0 0 32 38"><rect x="12" y="10" width="8" height="18" fill="#bdbdbd"/><rect x="14" y="4" width="4" height="8" fill="#ffd600"/><rect x="10" y="28" width="12" height="4" fill="#90caf9"/><circle cx="16" cy="14" r="2" fill="#fff"/></svg>`,
+        class: "icon-bigben",
+        x: 700, y: 350, dx: 0.18, dy: -0.22, size: 32
+    },
+    // Coliseo (Roma)
+    {
+        html: `<svg width="38" height="28" viewBox="0 0 38 28"><ellipse cx="19" cy="20" rx="16" ry="6" fill="#ffe082"/><rect x="6" y="8" width="26" height="12" rx="4" fill="#ffb300"/><rect x="10" y="12" width="4" height="4" fill="#fff"/><rect x="24" y="12" width="4" height="4" fill="#fff"/></svg>`,
+        class: "icon-coliseo",
+        x: 900, y: 120, dx: -0.18, dy: 0.19, size: 38
+    },
+    // Balanza de derecho (por Ulin)
+    {
+        html: `<svg width="38" height="38" viewBox="0 0 38 38"><rect x="17" y="8" width="4" height="18" fill="#bdbdbd"/><rect x="12" y="26" width="14" height="3" rx="1.5" fill="#90caf9"/><path d="M19 8 L9 22 L29 22 Z" fill="none" stroke="#1976d2" stroke-width="2"/><ellipse cx="13" cy="22" rx="3" ry="2" fill="#fff"/><ellipse cx="25" cy="22" rx="3" ry="2" fill="#fff"/></svg>`,
+        class: "icon-derecho",
+        x: 200, y: 500, dx: 0.22, dy: 0.15, size: 38
+    },
+    // Libro (por Ulin)
+    {
+        html: `<svg width="38" height="38" viewBox="0 0 38 38"><rect x="6" y="8" width="12" height="22" rx="2" fill="#fff"/><rect x="20" y="8" width="12" height="22" rx="2" fill="#90caf9"/><rect x="10" y="12" width="18" height="14" rx="2" fill="#e3f2fd"/></svg>`,
+        class: "icon-libro",
+        x: 600, y: 600, dx: 0.16, dy: -0.21, size: 38
+    }
+];
+
+// Banderas flotantes de países visitados (dispersas)
+const banderasFlotantes = [
+    "https://flagcdn.com/w40/gb.png", // Reino Unido
+    "https://flagcdn.com/w40/eg.png", // Egipto
+    "https://flagcdn.com/w40/fi.png", // Finlandia
+    "https://flagcdn.com/w40/se.png", // Suecia
+    "https://flagcdn.com/w40/dk.png", // Dinamarca
+    "https://flagcdn.com/w40/de.png", // Alemania
+    "https://flagcdn.com/w40/nl.png", // Holanda
+    "https://flagcdn.com/w40/be.png", // Bélgica
+    "https://flagcdn.com/w40/fr.png", // Francia
+    "https://flagcdn.com/w40/es.png", // España
+    "https://flagcdn.com/w40/at.png", // Austria
+    "https://flagcdn.com/w40/it.png", // Italia
+    "https://flagcdn.com/w40/va.png", // Vaticano
+    "https://flagcdn.com/w40/mc.png"  // Mónaco
+].map((src, i) => ({
+    html: `<img src="${src}" style="width:32px;height:22px;border-radius:4px;border:1.5px solid #42a5f5;box-shadow:0 2px 8px #1976d2;background:#fff;">`,
+    class: "icon-bandera",
+    x: 60 + Math.random() * (window.innerWidth - 120),
+    y: 60 + Math.random() * (window.innerHeight - 180),
+    dx: (Math.random()-0.5)*0.7,
+    dy: (Math.random()-0.5)*0.7,
+    size: 32
+}));
+
+// Crear los iconos en el fondo animado
+[...iconosViaje, ...banderasFlotantes].forEach((icon, i) => {
+    const div = document.createElement('div');
+    div.className = "icono-flotante " + icon.class;
+    div.innerHTML = icon.html;
+    div.style.left = icon.x + "px";
+    div.style.top = icon.y + "px";
+    div.style.width = icon.size + "px";
+    div.style.height = icon.size + "px";
+    fondo.appendChild(div);
+    icon._el = div;
+});
+
+// Animación JS para mover los iconos
+function moverIconos() {
+    const w = window.innerWidth, h = window.innerHeight;
+    [...iconosViaje, ...banderasFlotantes].forEach(icon => {
+        icon.x += icon.dx;
+        icon.y += icon.dy;
+        // Rebote en bordes
+        if (icon.x < 0 || icon.x > w - icon.size) icon.dx *= -1;
+        if (icon.y < 0 || icon.y > h - icon.size) icon.dy *= -1;
+        icon._el.style.left = icon.x + "px";
+        icon._el.style.top = icon.y + "px";
+    });
+    requestAnimationFrame(moverIconos);
+}
+moverIconos();
+    </script>
+</body>
+</html>
